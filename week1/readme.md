@@ -33,4 +33,9 @@
 
 compiling:
 
-g++ ut_shape.cpp -o ut_shape -lgtest
+g++ ut_shape.cpp -o ut_shape -lgtest -lpthread
+
+reference:
+https://stackoverflow.com/questions/32428595/gtest-test-compiling-error/32428714
+
+
