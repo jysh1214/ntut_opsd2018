@@ -54,6 +54,10 @@ compiling:
 
 g++ ut_shape.cpp -o ut_shape -lgtest -lpthread
 
+instead by
+
+g++ ut_shape.cpp -o ut_shape -lgtest
+
 reference:
 https://stackoverflow.com/questions/32428595/gtest-test-compiling-error/32428714
 
