@@ -12,20 +12,6 @@ int main(int argc, char ** argv)
 TEST (ShapeTest, first)
 {
     ASSERT_TRUE(true);
-}#include <gtest/gtest.h>
-#include "circle.h"
-#include "triangle.h"
-#include "rectangle.h"
-
-int main(int argc, char ** argv)
-{
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-
-TEST (ShapeTest, first)
-{
-    ASSERT_TRUE(true);
 }
 
 TEST (ShapeTest, Circle)
