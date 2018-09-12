@@ -38,8 +38,9 @@ sudo apt-get install cmake # install cmake
 cd /usr/src/gtest
 sudo cmake CMakeLists.txt
 sudo make
-
-# copy or symlink libgtest.a and libgtest_main.a to your /usr/lib folder
+```
+- copy or symlink libgtest.a and libgtest_main.a to your /usr/lib folder
+```
 sudo cp *.a /usr/lib
 ```
 reference:
@@ -49,6 +50,9 @@ https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/
 - Take care of command line parameters
 - Select sorting algorithm
 - Representation of Shapes
+  - install gtest, run it
+  - org project folder
+  - make/makefile: target, .PHONY
 
 compiling:
 
