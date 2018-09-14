@@ -18,7 +18,7 @@ class Circle
     		return 2 * M_PI * _r;
     	}
 
-    	bool test()
+    	bool isCircle() const
     	{
     		if (_r<=0){return false;}
     		else{return true;}
