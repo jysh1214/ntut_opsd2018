@@ -16,7 +16,7 @@ class Rectangle
     		return 2 * _l + 2 * _w;
     	}
 
-        bool test()
+        bool isRectangle()
         {
             if ((_l<=0)or(_w<=0))
             {
