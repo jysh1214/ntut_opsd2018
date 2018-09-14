@@ -17,7 +17,7 @@ TEST (ShapeTest, first)
 TEST (ShapeTest, Circle)
 {
     Circle c(10.0);
-    ASSERT_TRUE(c.test());
+    ASSERT_TRUE(c.isCircle());
     ASSERT_NEAR(314.159, c.area(), 0.001);
     ASSERT_NEAR(62.831, c.perimeter(), 0.001);
 }
@@ -25,7 +25,7 @@ TEST (ShapeTest, Circle)
 TEST (ShapeTest, Triangle)
 {
     Triangle t(3.0, 4.0, 5.0);
-    ASSERT_TRUE(t.test());
+    ASSERT_TRUE(t.isTriangle());
     ASSERT_NEAR(6.0, t.area(), 0.001);
     ASSERT_NEAR(12.0, t.perimeter(), 0.001);
 }
@@ -33,7 +33,7 @@ TEST (ShapeTest, Triangle)
 TEST (ShapeTest, Rectangle)
 {
     Rectangle r(5.0, 10.0);
-    ASSERT_TRUE(r.test());
+    ASSERT_TRUE(r.isRectangle());
     ASSERT_NEAR(50.0, r.area(), 0.001);
     ASSERT_NEAR(30.0, r.perimeter(), 0.001);
 }
