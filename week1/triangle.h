@@ -28,7 +28,7 @@ class Triangle
     	    double _b = dis(_x1, _y1, _x3, _y3);
     	    double _c = dis(_x2, _y2, _x3, _y3);
 
-    		if ((_a+_b>=_c)and(_a+_c>=_b)and(_b+_c>=_a))
+    		if ((_a+_b>_c)and(_a+_c>_b)and(_b+_c>_a))
     		{
     			return true;
     		} 
@@ -46,7 +46,7 @@ class Triangle
     	double dis(double a, double b, double c, double d) const
     	{
     		double i = pow((a-c), 2);
-    		double j = pow((c-d), 2);
+    		double j = pow((b-d), 2);
             return sqrt(i+j);
     	}
 
