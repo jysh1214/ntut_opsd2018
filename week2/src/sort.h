@@ -2,7 +2,8 @@
 #include <vector>
 
 using namespace::std;
-//template<class T> 
+template<class T> 
+void sortArea(T);
 
 class Sort
 {
@@ -14,11 +15,12 @@ class Sort
 
 		//The argument ** Accept comparsion ** can accept lambda, function, and object
 		//You should implement area ascending and descending lamda function as parameter for Sort::sortArea()
-		/*
+		template<class T> 
 		void sortArea(T comparsion)
 		{
             sort(_v->begin(), _v->end(), comparsion);
 		}
+		/*
         //You should use those functions as parameter for Sort::sortPerimeter()
 		void sortPerimeter(T comparsion)
 		{
