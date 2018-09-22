@@ -30,6 +30,7 @@
         P = Perimeter ; A = Area
         Note:If Area = 0.Throw an exception string "Division by zero".
 
+       reference:https://books.google.com.tw/books?id=zMFQDwAAQBAJ&pg=PA438&lpg=PA438&dq=If+Area+%3D+0.Throw+an+exception+string+%22Division+by+zero%22.&source=bl&ots=K9f1FFwUYC&sig=h4xiQq8c0HWeQR1dadgCnymeBb4&hl=en&sa=X&ved=2ahUKEwjcrL352s3dAhXIXrwKHUitBSwQ6AEwA3oECAgQAQ#v=onepage&q=If%20Area%20%3D%200.Throw%20an%20exception%20string%20%22Division%20by%20zero%22.&f=false
 
  4. Create `sort.h`. with following interface below:
 
