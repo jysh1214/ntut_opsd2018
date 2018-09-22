@@ -5,9 +5,6 @@
 
 #### Homework 2
 
-# Update
-14:40 p.m. 21 Sep 2018
-
 # Purpose of the homework:
   Using different ways to pass compare function
   1. lambda function
@@ -85,12 +82,6 @@ Change assertion to assert exception string which is equal to "Not a triangle".
 
 8. Make sure your project structure should be the same as [course project directory](https://ssl-gitlab.csie.ntut.edu.tw/yccheng/posd2018f "yccheng/posd2018f")
 
-# Mark
-
-TA assigned 14 test cases in CI.
-
-# Deadline
-11:59 p.m. 27 Sep 2018
 
 # Note
 Make sure your tests on local are all pass. Then you can push to Gitlab and watch the report on Jenkins.
