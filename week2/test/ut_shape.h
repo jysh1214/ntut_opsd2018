@@ -21,7 +21,8 @@ TEST (ShapeTest, Circle)
 TEST (ShapeTest, Triangle)
 {
     Triangle t(-3.0, 0.0, 0.0, 0.0, 0.0, 4.0);
-    ASSERT_TRUE(t.isTriangle());
+    //ASSERT_TRUE(t.isTriangle());
+    ASSERT_NO_THROW(t.isTriangle());
     ASSERT_NEAR(6.0, t.area(), 0.001);
     ASSERT_NEAR(12.0, t.perimeter(), 0.001);
     ASSERT_NEAR(24.0, t.compactness(), 0.001);
