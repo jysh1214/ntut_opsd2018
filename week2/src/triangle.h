@@ -38,14 +38,26 @@ class Triangle: public Shape
 
         bool isTriangle() const
         {
+            
             if ((_a+_b>_c)and(_a+_c>_b)and(_b+_c>_a))
             {
-                return true;
+
             } 
             else
             {
-                return false;
+                throw invalid_argument("Division by zero.");
             }
+            
+            /*
+            try
+            {
+                return excp();
+            }
+            catch (const invalid_argument& e)
+            {
+                cout<<"Caught exception:"<<e.what()<<endl;
+            }
+            */
         }
 
     private:
@@ -62,7 +74,19 @@ class Triangle: public Shape
             double s = (_a + _b + _c)/2;
             return sqrt(s*(s-_a)*(s-_b)*(s-_c));
         }
-        
+        /*
+        bool excp() const
+        {
+            if ((_a+_b>_c)and(_a+_c>_b)and(_b+_c>_a))
+            {
+                return true;
+            }
+            else
+            {
+                throw invalid_argument("Not a triangle");
+            }
+        }
+        */
         double SafeDivide(double num, double den) const
         {
             if(den==0)
