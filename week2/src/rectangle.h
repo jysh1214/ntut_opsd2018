@@ -1,7 +1,11 @@
+#ifndef _RECTANGLE_H
+#define _RECTANGLE_H
+
 #include<iostream>
 
 using namespace::std;
 
+#include "shape.h"
 class Rectangle: public Shape
 {
     public:
@@ -19,19 +23,19 @@ class Rectangle: public Shape
         {
             return 2 * (_l + _w);
         }
-
+        /*
         double compactness() const
         {
             try
             {
-                return SafeDivide(pow(perimeter(), 2), area());
+                return SafeDivide(perimeter()*perimeter(), area());
             } 
             catch (const invalid_argument& e)
             {
                 cout<<"Caught exception:"<<e.what()<<endl;
             }
         }
-
+        */
         bool isRectangle()
         {
             if ((_l<=0)or(_w<=0))
@@ -47,7 +51,7 @@ class Rectangle: public Shape
     private:
         double _l;
         double _w;
-
+        /*
         double SafeDivide(double num, double den) const
         {
             if(den==0)
@@ -59,4 +63,6 @@ class Rectangle: public Shape
                 return num / den;
             }
         }
+        */
 };
+#endif
