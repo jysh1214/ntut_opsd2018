@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "ut_shape.h"
-#include "ut_sort.h"
+#include "ut_shape.cpp"
+#include "ut_sort.cpp"
 
 using namespace::std;
 
