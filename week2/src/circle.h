@@ -21,19 +21,6 @@ class Circle: public Shape
             return 2 * M_PI * _r;
         }
 
-
-        double compactness() const
-        {
-            try
-            {
-                return SafeDivide(pow(perimeter(), 2), area());
-            } 
-            catch (const invalid_argument& e)
-            {
-                cout<<"Caught exception:"<<e.what()<<endl;
-            }
-        }
-
         bool isCircle() const
         {
             if (_r<=0){return false;}
@@ -43,15 +30,4 @@ class Circle: public Shape
     private:
         double _r;
 
-        double SafeDivide(double num, double den) const
-        {
-            if(den==0)
-            {
-                throw invalid_argument("Division by zero.");
-            }
-            else
-            {
-                return num / den;
-            }
-        }
 };
