@@ -1,9 +1,41 @@
+#ifndef _SORT_H
+#define _SORT_H
+
 #include <algorithm>
 #include <vector>
 
 using namespace::std;
 template<class T> void sortArea(T);
 template<class T> void sortPerimeter(T);
+template<class T> void sortCompactness(T);
+
+bool perimeterAscendingComparison(Shape *a, Shape *b)
+{
+    return a->perimeter() < b->perimeter();
+}
+
+bool perimeterDescendingComparison(Shape *a, Shape *b)
+{
+    return a->perimeter() > b->perimeter();
+}
+
+class CompactnessAscendingComparison
+{
+    public:
+        bool operator() (Shape *a, Shape *b)
+        { 
+            return (a->compactness() < b->compactness());
+        }
+};
+
+class CompactnessDescendingComparison
+{
+    public:
+        bool operator() (Shape *a, Shape *b)
+        {
+            return (a->compactness() > b->compactness());
+        }
+};
 
 class Sort
 {
@@ -38,3 +70,4 @@ class Sort
     private:
         vector<Shape*>*_v;
 };
+#endif
