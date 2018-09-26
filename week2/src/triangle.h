@@ -1,8 +1,12 @@
+#ifndef _TRIANGLE_H
+#define _TRIANGLE_H
+
 #include <math.h>
 #include<iostream>
 
 using namespace::std;
 
+#include "shape.h"
 class Triangle: public Shape
 {
     public:
@@ -11,6 +15,9 @@ class Triangle: public Shape
             _a = sqrt(pow((_x1-_x2),2)+pow((_y1-_y2),2));
             _b = sqrt(pow((_x1-_x3),2)+pow((_y1-_y3),2));
             _c = sqrt(pow((_x2-_x3),2)+pow((_y2-_y3),2));
+
+            if (isTriangle()==false)
+                throw string("Not a triangle.");
         }
 
         double area() const
@@ -23,29 +30,30 @@ class Triangle: public Shape
 
             return _a + _b + _c;
         }
-
+        /*
         double compactness() const
         {
             try
             {
-                return SafeDivide(pow(perimeter(), 2), area());
+                return SafeDivide(perimeter()*perimeter(), area());
             } 
             catch (const invalid_argument& e)
             {
                 cout<<"Caught exception:"<<e.what()<<endl;
             }
         }
-
+        */
         bool isTriangle() const
         {
             
             if ((_a+_b>_c)and(_a+_c>_b)and(_b+_c>_a))
             {
-
+                return true;
             } 
             else
             {
-                throw invalid_argument("Division by zero.");
+                //throw invalid_argument("Not a triangle");
+                return false;
             }
             
             /*
@@ -59,7 +67,19 @@ class Triangle: public Shape
             }
             */
         }
-
+        /*
+        double SafeDivide(double num, double den) const
+        {
+            if(den==0)
+            {
+                throw invalid_argument("Division by zero.");
+            }
+            else
+            {
+                return num / den;
+            }
+        }
+        */
     private:
         double _x1; double _y1;
         double _x2; double _y2;
@@ -87,15 +107,6 @@ class Triangle: public Shape
             }
         }
         */
-        double SafeDivide(double num, double den) const
-        {
-            if(den==0)
-            {
-                throw invalid_argument("Division by zero.");
-            }
-            else
-            {
-                return num / den;
-            }
-        }
+
 };
+#endif
