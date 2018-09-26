@@ -4,35 +4,6 @@
 
 using namespace::std;
 
-bool perimeterAscendingComparison(Shape *a, Shape *b)
-{
-    return a->perimeter() < b->perimeter();
-}
-
-bool perimeterDescendingComparison(Shape *a, Shape *b)
-{
-    return a->perimeter() > b->perimeter();
-}
-
-class CompactnessAscendingComparison
-{
-    public:
-        bool operator() (Shape *a, Shape *b) const
-        { 
-            return a->compactness() < b->compactness();
-        }
-}cac;
-
-class CompactnessDescendingComparison
-{
-    public:
-        bool operator() (Shape *a, Shape *b) const
-        {
-            return a->compactness() > b->compactness();
-        }
-}cdc;
-
-
 TEST(SortTest, first)
 {
     ASSERT_TRUE(true);
@@ -91,7 +62,7 @@ TEST(SortTest, sortCompactnessAscending)
     Shape* test_array_5[4] = {new Circle(1.0), new Circle(0.5), new Rectangle(5.0, 6.0), new Rectangle(0.5, 1.5)};
     vector<Shape*> myvetor_5(test_array_5, test_array_5+4);
     Sort *s_5 = new Sort(&myvetor_5);
-    s_5->sortCompactness(cac);
+    s_5->sortCompactness(CompactnessAscendingComparison());
     ASSERT_NEAR(12.5664, myvetor_5[0]->compactness(), 0.001);
     ASSERT_NEAR(12.5664, myvetor_5[1]->compactness(), 0.001);
     ASSERT_NEAR(16.1333, myvetor_5[2]->compactness(), 0.001);
@@ -103,7 +74,7 @@ TEST(SortTest, sortCompactnessDescending)
     Shape* test_array_6[4] = {new Circle(1.0), new Circle(0.5), new Rectangle(5.0, 6.0), new Rectangle(0.5, 1.5)};
     vector<Shape*> myvetor_6(test_array_6, test_array_6+4);
     Sort *s_6 = new Sort(&myvetor_6);
-    s_6->sortCompactness(cdc);
+    s_6->sortCompactness(CompactnessDescendingComparison());
     ASSERT_NEAR(12.5664, myvetor_6[3]->compactness(), 0.001);
     ASSERT_NEAR(12.5664, myvetor_6[2]->compactness(), 0.001);
     ASSERT_NEAR(16.1333, myvetor_6[1]->compactness(), 0.001);
