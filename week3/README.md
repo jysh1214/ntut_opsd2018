@@ -46,6 +46,8 @@
     reference:https://en.cppreference.com/w/cpp/io/basic_ios/exceptions
     
     reference:https://github.com/Dobiasd/articles/blob/master/creating_a_replacement_for_the_switch_statement_in_cpp_that_also_works_for_strings.md
+    
+    reference:https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
 
  3. output.txt data specification should follow:
 
