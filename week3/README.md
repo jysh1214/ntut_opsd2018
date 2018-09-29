@@ -5,11 +5,6 @@
 
 #### Homework 3
 
-
-# Update
-
-  18:00 p.m  28 Sep 2018
-
 # Purpose of the homework:
   Resolve thr problem 1:sorting shapes
 
@@ -48,7 +43,7 @@
 
         ※ Note: you must add a white space between class name and left round bracket.
 
-        reference:https://en.cppreference.com/w/cpp/io/basic_ios/exceptions
+    reference:https://en.cppreference.com/w/cpp/io/basic_ios/exceptions
 
  3. output.txt data specification should follow:
 
