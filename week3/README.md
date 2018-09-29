@@ -44,6 +44,8 @@
         ※ Note: you must add a white space between class name and left round bracket.
 
     reference:https://en.cppreference.com/w/cpp/io/basic_ios/exceptions
+    
+    reference:https://github.com/Dobiasd/articles/blob/master/creating_a_replacement_for_the_switch_statement_in_cpp_that_also_works_for_strings.md
 
  3. output.txt data specification should follow:
 
