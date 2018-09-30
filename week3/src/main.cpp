@@ -162,6 +162,46 @@ void write_file(vector<double> v, string destination)
     outfile << "]";
     outfile.close();
 }
+
+int check_method(string s)
+{
+    int i;
+    if (s=="area")
+    {
+        i = 10;
+    } 
+    else if (s=="perimeter")
+    {
+        i = 20;
+    }
+    else if (s=="compactness")
+    {
+        i = 30;
+    }
+    else
+    {
+        throw string("No such method.");
+    }
+    return i;
+}
+
+int check_order(string s)
+{
+    int i;
+    if (s=="inc")
+    {
+        i = 1;
+    }
+    else if (s=="dec")
+    {
+        i = 2;
+    }
+    else
+    {
+        throw string("No such order.");
+    }
+    return i;
+}
      
 int  main(int argc, char *argv[])
 {
@@ -201,91 +241,69 @@ int  main(int argc, char *argv[])
         return 0;
     }
 
-    int op_id;
+    int op_id = 0;
 
-    if (method=="area")
+    try
     {
-    	op_id = 10;
-    } 
-    else if (method=="perimeter")
-    {
-    	op_id = 20;
+        op_id += check_method(method);
     }
-    else if (method=="compactness")
+    catch (const string& e)
     {
-    	op_id = 30;
-    }
-    else
-    {
-        throw string("No such method.");
+        cout<<"Caught exception:"<<e<<endl;
+        return 0; 
     }
 
-    if (order=="inc")
+    try
     {
-    	op_id += 1;
+        op_id += check_order(order); 
     }
-    else if (order=="dec")
+    catch (const string& e)
     {
-    	op_id += 2;
-    }
-    else
-    {
-        throw string("No such order.");
-    }
+        cout<<"Caught exception:"<<e<<endl;
+        return 0; 
+    }    
 
     Sort *s = new Sort(&myvector);
-    vector<double> sortedData;
 
     //sort
     switch(op_id)
     {
         case 11:
-            s->sortArea([](Shape *a, Shape *b){return a->area() < b->area();}); 
-            for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
-            {   
-                sortedData.push_back((*it)->area());
-            }
+            s->sortArea([](Shape *a, Shape *b){return a->area() < b->area();});
             break;
 
         case 12:
             s->sortArea([](Shape *a, Shape *b){return a->area() > b->area();});
-            for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it) 
-            {
-                sortedData.push_back((*it)->area());
-            }
             break;   
 
         case 21:
             s->sortPerimeter([](Shape *a, Shape *b){return a->perimeter() < b->perimeter();});
-            for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
-            {
-                sortedData.push_back((*it)->perimeter());
-            }
             break;
 
         case 22:
             s->sortPerimeter([](Shape *a, Shape *b){return a->perimeter() > b->perimeter();});
-            for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it) 
-            {
-                sortedData.push_back((*it)->perimeter());
-            }
             break;
 
         case 31:
             s->sortCompactness([](Shape *a, Shape *b){return a->compactness() < b->compactness();});
-            for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
-            {
-                sortedData.push_back((*it)->compactness());
-            }
             break;
 
         case 32:
             s->sortCompactness([](Shape *a, Shape *b){return a->compactness() > b->compactness();});
-            for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it) 
-            {
-                sortedData.push_back((*it)->compactness());
-            }
             break;
+
+        default:
+            throw string("Error.");
+            return 0;
+    }
+
+    vector<double> sortedData;
+
+    for (vector<Shape*>::iterator it = myvector.begin() ; it != myvector.end(); ++it) 
+    {
+        if      (op_id/10==1) sortedData.push_back((*it)->area());
+        else if (op_id/10==2) sortedData.push_back((*it)->perimeter());
+        else if (op_id/10==3) sortedData.push_back((*it)->compactness());
     }
 
     //write file
@@ -298,4 +316,6 @@ int  main(int argc, char *argv[])
         cout<<"Caught exception:"<<e<<endl;
         return 0;
     }
+
+    return 0;
 }
