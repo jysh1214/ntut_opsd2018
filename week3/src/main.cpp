@@ -85,7 +85,7 @@ vector<Shape*> parse_file(string filepath)
 
     for (string::size_type i = 0; i < myFile.size(); ++i)
     {  
-        if (myFile[i]==' ')
+        if (myFile[i]==' ') 
         {
             function = myFile.substr(p, i-p); 
             p = i + 1;
@@ -103,7 +103,7 @@ vector<Shape*> parse_file(string filepath)
 
         else if (myFile[i]==',')
         {
-            string number = myFile.substr(p, i-p);
+            number = myFile.substr(p, i-p);
             arg[arg_num] = stod(number);
             number.clear();
             arg_num += 1;
@@ -111,7 +111,7 @@ vector<Shape*> parse_file(string filepath)
         }
         else if (myFile[i]==')')
         {
-            string number = myFile.substr(p, i-p);
+            number = myFile.substr(p, i-p);
             arg[arg_num] = stod(number);
             number.clear();
             arg_num = 0;
@@ -137,11 +137,14 @@ vector<Shape*> parse_file(string filepath)
             {
                 myvector.push_back(new Triangle(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5]));
             }
+            else
+            {
+                throw string("No such function.");
+            }
                                                                              
             arg.fill(0);
             array_num += 1;
         }
-
     }
     myfile.close();
 
@@ -152,6 +155,8 @@ void write_file(vector<double> v, string destination)
 {
     ofstream outfile;
     outfile.open(destination);
+
+    if(!outfile) throw string("Maybe not enough memory.");
 
     outfile << "[";
     for (vector<double>::iterator it = v.begin() ; it != v.end(); ++it)
