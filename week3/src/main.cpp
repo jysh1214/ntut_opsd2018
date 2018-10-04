@@ -109,6 +109,7 @@ vector<Shape*> parse_file(string filepath)
             arg_num += 1;
             p = i + 1;
         }
+        
         else if (myFile[i]==')')
         {
             number = myFile.substr(p, i-p);
@@ -119,7 +120,7 @@ vector<Shape*> parse_file(string filepath)
 
             /*
             switchFunction(function, {
-            {"Circle",    defer(put_in, myarray, array_num, new Circle(arg[0]))},
+            {"Circle",    defer([](){})},
             {"Rectangle", defer([](){})},
             {"Triangle",  defer([](){})}},
             defer([](){throw string("No such function.");}));
@@ -156,7 +157,7 @@ void write_file(vector<double> v, string destination)
     ofstream outfile;
     outfile.open(destination);
 
-    if(!outfile) throw string("Maybe not enough memory.");
+    if(!outfile) throw string("Error.");
 
     outfile << "[";
     for (vector<double>::iterator it = v.begin() ; it != v.end(); ++it)
@@ -170,49 +171,25 @@ void write_file(vector<double> v, string destination)
 
 int check_method(string s)
 {
-    int i;
-    if (s=="area")
-    {
-        i = 10;
-    } 
-    else if (s=="perimeter")
-    {
-        i = 20;
-    }
-    else if (s=="compactness")
-    {
-        i = 30;
-    }
-    else
-    {
-        throw string("No such method.");
-    }
-    return i;
+    if      (s=="area")        return 10;
+    else if (s=="perimeter")   return 20;
+    else if (s=="compactness") return 30;
+    else throw string("No such method.");
 }
 
 int check_order(string s)
 {
-    int i;
-    if (s=="inc")
-    {
-        i = 1;
-    }
-    else if (s=="dec")
-    {
-        i = 2;
-    }
-    else
-    {
-        throw string("No such order.");
-    }
-    return i;
+    if      (s=="inc") return 1;
+    else if (s=="dec") return 2;
+    else throw string("No such order.");
 }
      
 int  main(int argc, char *argv[])
 {
     //check 5 argc 
-    if(argc < 5){
-        fprintf(stderr, "usage: %s <function>\n", argv[0]);
+    if(argc < 5)
+    {
+        fprintf(stderr, "usage: %s --input file path --output file path --method --order\n", argv[0]);
         return 0;
     }
 
@@ -229,7 +206,7 @@ int  main(int argc, char *argv[])
     }
     catch (ios_base::failure& fail)
     {
-        fprintf(stderr, "file: %s don't exist\n", argv[1]);
+        fprintf(stderr, "file: %s don't exist.\n", argv[1]);
         return 0;
     }
 
@@ -242,7 +219,7 @@ int  main(int argc, char *argv[])
     }
     catch (const string& e)
     {
-        cout<<"Caught exception:"<<e<<endl;
+        cout<<"Caught exception: "<<e<<endl;
         return 0;
     }
 
@@ -254,7 +231,7 @@ int  main(int argc, char *argv[])
     }
     catch (const string& e)
     {
-        cout<<"Caught exception:"<<e<<endl;
+        cout<<"Caught exception: "<<e<<endl;
         return 0; 
     }
 
@@ -264,7 +241,7 @@ int  main(int argc, char *argv[])
     }
     catch (const string& e)
     {
-        cout<<"Caught exception:"<<e<<endl;
+        cout<<"Caught exception: "<<e<<endl;
         return 0; 
     }    
 
@@ -309,6 +286,7 @@ int  main(int argc, char *argv[])
         if      (op_id/10==1) sortedData.push_back((*it)->area());
         else if (op_id/10==2) sortedData.push_back((*it)->perimeter());
         else if (op_id/10==3) sortedData.push_back((*it)->compactness());
+        else throw string("Error.");
     }
 
     //write file
@@ -318,7 +296,7 @@ int  main(int argc, char *argv[])
     }
     catch (const string& e)
     {
-        cout<<"Caught exception:"<<e<<endl;
+        cout<<"Caught exception: "<<e<<endl;
         return 0;
     }
 
