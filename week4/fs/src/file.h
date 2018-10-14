@@ -7,9 +7,6 @@ class File: public Node
 {
     public:
         
-        File(const char * path): Node(path)
-        {
-
-        }
+        File(const char *path): Node(path) {}
 };
 #endif
