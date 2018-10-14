@@ -64,9 +64,13 @@ class Folder: public Node
                 temp += "/"; temp += nodeName; temp += '\n';
                 totalFind += temp;  
             }
-
+            
             for (int i = 0; i < _children.size(); i++)
             {
+                temp += "/"; temp += _children[i]->name();
+
+
+            /*
                 temp += "/"; temp += _children[i]->name();
                 if (_children[i]->classType()=="Folder")
                 {
@@ -89,8 +93,9 @@ class Folder: public Node
                 else
                 {
                     throw string("Error.");
-                }
+                }*/
             }
+        return temp;
         }
 };
 #endif
