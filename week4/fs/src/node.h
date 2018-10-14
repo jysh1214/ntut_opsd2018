@@ -18,7 +18,7 @@ class Node
             _nodeName = getName();
         }
         
-        string name()
+        string name() const
         {
             return _nodeName;
         }
@@ -28,7 +28,7 @@ class Node
             return _st.st_size;
         }
         
-        virtual string find(string nodeName) const
+        virtual string find(string nodeName)
         {
             if (_nodeName==nodeName) return nodeName;
         }
@@ -48,6 +48,11 @@ class Node
             throw string("number of children: not applicable");
         }
 
+        virtual string classType() const
+        {
+
+        }
+
     protected:
         const char *_path;
         struct stat _st;
@@ -57,6 +62,7 @@ class Node
         {
             char *fileName = (char*)malloc(sizeof(_path));
             strcpy(fileName, _path);
+            /*
             char *next;
 
             while ((next = strchr(fileName, '/')))
@@ -66,6 +72,14 @@ class Node
 
             string str(fileName); //convert char * to string
             return str;
+            */
+            string str(fileName); //convert char * to string
+            //free(fileName);
+            for (int i = str.size(); i > 0; i--)
+            {
+                if (str[i]=='/') return str.substr(i+1, str.size());
+            }
+
         }
 };
 #endif
