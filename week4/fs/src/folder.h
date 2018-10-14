@@ -54,6 +54,7 @@ class Folder: public Node
         {
             totalFind.clear();
             recursion(nodeName, temp);
+            totalFind.pop_back(); totalFind.pop_back(); //remove '\n'
             return totalFind;
         }
 
