@@ -1,6 +1,7 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
+#include <vector>
 #include "node.h"
 
 using namespace::std;
@@ -9,9 +10,15 @@ class Folder: public Node
 {
     public:
 
-        Folder(const char* path): Node(path)
+        Folder(const char *path): Node(path)
         {
+            
+        }
 
+        string find(string nodeName)
+        {
+            string temp = "";
+            return findName(nodeName, temp);
         }
 
         void add(Node *node)
@@ -36,5 +43,42 @@ class Folder: public Node
 
     private:
         vector<Node *> _children;
+        string totalFind;
+
+        string findName(string nodeName, string temp)
+        {
+            totalFind = "";
+            findRecursion(nodeName, temp);
+            return totalFind;
+        }
+
+        string findRecursion(string nodeName, string temp)
+        {
+            if (Node::_nodeName==nodeName)
+            {
+                temp += "/"; temp += nodeName; temp += '\n';
+                totalFind += temp;
+            }
+
+            for (int i = 0; i < _children.size(); i++)
+            {
+                temp += "/"; temp += _children[i]->name();
+                cout<<"type: "<<typeid(_children[i]).name()<<endl;
+                //findRecursion(nodeName, temp);
+                /*
+                if (_children[i])
+                {
+                    findRecursion(nodeName, temp);
+                }
+                else
+                {
+
+                }*/
+                
+                // backtracking 
+                //temp.pop_back(); //temp -= "/"; 
+                //temp.substr(0, (temp.size())-(_children[i]->name().size()));//temp -= _children[i]->name();
+            } 
+        }
 };
 #endif
