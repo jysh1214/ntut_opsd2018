@@ -5,9 +5,9 @@
 
 /*
 test_data
-    ├── folder
-    │     └── a.out
-    └── hello.cpp
+    \u251c\u2500\u2500 folder
+    \u2502?   \u2514\u2500\u2500 a.out
+    \u2514\u2500\u2500 hello.cpp
 */
 
 TEST (FileSystemTest, nodeName)
@@ -27,16 +27,13 @@ TEST (FileSystemTest, nodeName)
 
 TEST (FileSystemTest, findNode)
 {
-    //Node * a_out = new File ("./test_data/folder/a.out");
-    //ASSERT_EQ("a.out", a_out->find("a.out"));
+    Node * a_out = new File ("./test_data/folder/a.out");
+    ASSERT_EQ("a.out", a_out->find("a.out"));
 
     Node * test_data = new Folder ("./test_data");
     Node * hello_cpp = new File ("./test_data/hello.cpp");
     test_data->add(hello_cpp);
-    ASSERT_EQ("test_data/hello.cpp", test_data->find("hello.cpp"));
-
-    //Node * node_3 = new Folder ("./test_data");
-    //ASSERT_EQ("test_data/folder/a.out", node_3->find("a.out"));   
+    ASSERT_EQ("test_data/hello.cpp", test_data->find("hello.cpp")); 
 }
 
 /*
