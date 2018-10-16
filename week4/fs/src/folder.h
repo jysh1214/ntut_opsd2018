@@ -5,7 +5,6 @@
 #include "node.h"
 
 using namespace::std;
-template<class T> void findName (T, string);
 
 class Folder: public Node
 {
