@@ -9,12 +9,17 @@ class File: public Node
         
         File(const char *path): Node(path) 
         {
-        	
+ 
+        }
+
+        string find(string nodeName)
+        {
+           if (this->name()==nodeName) return nodeName;
         }
 
         string classType() const
         {
-        	return "File";
+            return "File";
         }
 };
 #endif
