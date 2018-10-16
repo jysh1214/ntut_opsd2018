@@ -5,6 +5,7 @@
 #include "node.h"
 
 using namespace::std;
+template<class T> void findName (T, string);
 
 class Folder: public Node
 {
@@ -12,13 +13,26 @@ class Folder: public Node
 
         Folder(const char *path): Node(path)
         {
-            //totalFind = "";
+            
         }
 
         string find(string nodeName)
         {
+            string findList = "";
             string temp = "";
-            return findName(nodeName, temp);
+
+            findName(this, nodeName);
+            
+            for (int i = 0; i < this->totalFind.size(); i++)
+            {
+                int x = (this->getPath()).size();
+                int y = (this->name()).size();
+                temp += (totalFind[i]->getPath()).substr(x-y, (totalFind[i]->getPath()).size());
+                findList += temp; 
+                temp.clear();
+                if (i!=totalFind.size()-1) findList+= '\n';
+            }
+            return findList;
         }
 
         void add(Node *node)
@@ -45,58 +59,22 @@ class Folder: public Node
         {
             return "Folder";
         }
-
+        
     private:
         vector<Node *> _children;
-        string totalFind;
+        vector<Node *> totalFind;
 
-        string findName(string nodeName, string temp)
+        void findName (Node *node, string nodeName)
         {
-            totalFind.clear();
-            recursion(nodeName, temp);
-            totalFind.pop_back(); totalFind.pop_back(); //remove '\n'
-            return totalFind;
-        }
+            if (node->name()==nodeName) totalFind.push_back(node);
 
-        string recursion(string nodeName, string temp)
-        {
-            if (Node::_nodeName==nodeName)
+            if (node->classType()=="Folder")
             {
-                temp += "/"; temp += nodeName; temp += '\n';
-                totalFind += temp;  
-            }
-            
-            for (int i = 0; i < _children.size(); i++)
-            {
-                temp += "/"; temp += _children[i]->name();
-
-
-            /*
-                temp += "/"; temp += _children[i]->name();
-                if (_children[i]->classType()=="Folder")
+                for (int i = 0; i < _children.size(); i++)
                 {
-                    cout<<temp<<endl;
-
-                    recursion(nodeName, temp);
-                    // backtracking 
-                    temp.pop_back(); //temp -= "/"; 
-                    temp.substr(0, (temp.size())-(_children[i]->name().size()));//temp -= _children[i]->name();
-                    cout<<temp<<endl;
+                    findName(_children[i], nodeName);
                 }
-                else if (_children[i]->classType()=="File")
-                {
-                    if (nodeName==_children[i]->name())
-                    {
-                        temp += "/"; temp += nodeName; temp += '\n';
-                        totalFind += temp;  
-                    }
-                }
-                else
-                {
-                    throw string("Error.");
-                }*/
             }
-        return temp;
         }
 };
 #endif
