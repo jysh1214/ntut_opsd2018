@@ -15,6 +15,7 @@ class Node
         {
             const char* _path = (const char*)malloc(sizeof(path));
             lstat(_path, &_st);
+            stringPath = charPointerToString();
             _nodeName = getName();
         }
         
@@ -27,10 +28,15 @@ class Node
         {
             return _st.st_size;
         }
+
+        string getPath() const
+        {
+            return stringPath;
+        }
         
         virtual string find(string nodeName)
         {
-            if (_nodeName==nodeName) return nodeName;
+           
         }
 
         virtual int infoContent() const
@@ -53,33 +59,28 @@ class Node
 
         }
 
-    protected:
+    private:
         const char *_path;
         struct stat _st;
         string _nodeName;
+        string stringPath;
 
         string getName() const
         {
+            for (int i = stringPath.size(); i > 0; i--)
+            {
+                if (stringPath[i]=='/') return stringPath.substr(i+1, stringPath.size());
+            }
+
+        }
+
+        string charPointerToString() const
+        {
             char *fileName = (char*)malloc(sizeof(_path));
             strcpy(fileName, _path);
-            /*
-            char *next;
+            string str(fileName);
 
-            while ((next = strchr(fileName, '/')))
-            {
-                fileName = next + 1;
-            }
-
-            string str(fileName); //convert char * to string
             return str;
-            */
-            string str(fileName); //convert char * to string
-            //free(fileName);
-            for (int i = str.size(); i > 0; i--)
-            {
-                if (str[i]=='/') return str.substr(i+1, str.size());
-            }
-
         }
 };
 #endif
