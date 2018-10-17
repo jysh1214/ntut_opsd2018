@@ -4,7 +4,7 @@
 #include <vector>
 #include "node.h"
 
-using namespace::std;
+using namespace std;
 
 class Folder: public Node
 {
@@ -13,25 +13,6 @@ class Folder: public Node
         Folder(const char *path): Node(path)
         {
             
-        }
-
-        string find(string nodeName)
-        {
-            string findList = "";
-            string temp = "";
-
-            findName(this, nodeName);
-            
-            for (int i = 0; i < this->totalFind.size(); i++)
-            {
-                int x = (this->getPath()).size();
-                int y = (this->name()).size();
-                temp += (totalFind[i]->getPath()).substr(x-y, (totalFind[i]->getPath()).size());
-                findList += temp; 
-                temp.clear();
-                if (i!=totalFind.size()-1) findList+= '\n';
-            }
-            return findList;
         }
 
         void add(Node *node)
@@ -58,22 +39,44 @@ class Folder: public Node
         {
             return "Folder";
         }
+
+        string find(string nodeName) const
+        {
+            vector<Node *> totalFind;
+            string findList = "";
+            string temp = "";
+
+            this->findName(nodeName, totalFind);
+
+            if (totalFind.size()==0) return "";
+            
+            for (int i = 0; i < totalFind.size(); i++)
+            { 
+                int x = (this->getPath()).size();
+                temp += ".";
+                temp += (totalFind[i]->getPath()).substr(x, (totalFind[i]->getPath()).size());
+                findList += temp; 
+                temp.clear();
+                if (i!=totalFind.size()-1) findList+= '\n';
+            }
+            return findList;
+        }
+
+        void findName (string nodeName, vector<Node *>& answer) const
+        {
+            for (int i = 0; i < _children.size(); i++)
+            { 
+                Node *node = this->_children[i];
+                if (node->name() == nodeName) 
+                {
+                    answer.push_back(node);
+                }
+                node->findName(nodeName, answer);
+            }
+        }
         
     private:
         vector<Node *> _children;
-        vector<Node *> totalFind;
-
-        void findName (Node *node, string nodeName)
-        {
-            if (node->name()==nodeName) totalFind.push_back(node);
-
-            if (node->classType()=="Folder")
-            {
-                for (int i = 0; i < _children.size(); i++)
-                {
-                    findName(_children[i], nodeName);
-                }
-            }
-        }
+ 
 };
 #endif
