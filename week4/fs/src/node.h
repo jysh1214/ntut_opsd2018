@@ -2,7 +2,6 @@
 #define NODE_H
 
 #include <sys/stat.h>
-#include <iostream>
 #include <string>
 
 using namespace::std;
@@ -10,33 +9,15 @@ using namespace::std;
 class Node
 {
     public:
-
-        Node(const char *path): _path(path)
+        Node(const char * path): _path(path)
         {
-            const char* _path = (const char*)malloc(sizeof(path));
             lstat(_path, &_st);
-            stringPath = charPointerToString();
-            _nodeName = getName();
-        }
-        
-        string name() const
-        {
-            return _nodeName;
+            if (lstat(_path, &_st) == -1) throw std::string("No such file or directory.");
         }
 
         int size() const
         {
             return _st.st_size;
-        }
-
-        string getPath() const
-        {
-            return stringPath;
-        }
-        
-        virtual string find(string nodeName)
-        {
-           
         }
 
         virtual int infoContent() const
@@ -46,41 +27,34 @@ class Node
 
         virtual void add(Node *node)
         {
-            throw string("unable to add");
+            throw string("unable to add\n");
         }
 
         virtual int numberOfChildren() const
         {
-            throw string("number of children: not applicable");
+            throw string("number of children: not applicable\n");
         }
 
-        virtual string classType() const
+        std::string getPath() const
         {
-
+            return _path;
         }
 
-    private:
-        const char *_path;
-        struct stat _st;
-        string _nodeName;
-        string stringPath;
-
-        string getName() const
+        std::string name() const
         {
-            for (int i = stringPath.size(); i > 0; i--)
-            {
-                if (stringPath[i]=='/') return stringPath.substr(i+1, stringPath.size());
-            }
+            string nodeName;
+            string tempStr = this->_path;
+            nodeName = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
 
+            return nodeName;
         }
 
-        string charPointerToString() const
-        {
-            char *fileName = (char*)malloc(sizeof(_path));
-            strcpy(fileName, _path);
-            string str(fileName);
+        virtual std::string find(std::string nodeName) const = 0;
 
-            return str;
-        }
+        virtual void findName(std::string nodeName, std::vector<Node *>& answer) const{}
+
+  private:
+      const char * _path;
+      struct stat _st;
 };
 #endif
