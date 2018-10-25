@@ -10,7 +10,8 @@ Find::Find(string nodeName): _nodeName(nodeName)
 
 string Find::visitFile(File *file)
 {
-    if (file->name()==_nodeName) return _nodeName;
+    Action *n = new Name();
+    if (file->accept(n)==_nodeName) return _nodeName;
     else return ("");
 }
 
@@ -39,23 +40,25 @@ string Find::visitFolder(Folder *folder)
 
 void Find::findName(vector<Node *>& answer, Node *node)
 {
-    if (node->classType()=="Folder")
+    if (node->classType() == "Folder")
     {
         vector<Node *> children = node->getChildren();
         for (int i = 0; i < children.size(); i++)
         {
             Node *node = children[i];
-            if (node->name() == _nodeName) answer.push_back(node);
+            Action *n = new Name();
+            if (node->accept(n) == _nodeName) answer.push_back(node);
             this->findName(answer, node);
         }
     }
-    else if (node->classType()=="File")
+    else if (node->classType() == "File")
     {
-        if (node->name() == _nodeName) answer.push_back(node);
+        // Action *n = new Name();
+        // if (node->accept(n) == _nodeName) answer.push_back(node);
     }
     else
     {
-    	throw string ("Error.");
+        throw string ("Error.");
     }
 
 }
