@@ -5,26 +5,26 @@
 #include <iostream>
 Find::Find(string nodeName): _nodeName(nodeName)
 {
-    //_nodeName = nodeName;
+    _answer;
 }
 
-string Find::visitFile(File *file)
+void Find::visitFile(File *file)
 {
     Action *n = new Name();
-    if (file->accept(n)==_nodeName) return _nodeName;
-    else return ("");
+    file->accept(n);
+    if (n->getName()==_nodeName) _answer = _nodeName;
+    else _answer = "";
 }
 
-string Find::visitFolder(Folder *folder)
+void Find::visitFolder(Folder *folder)
 {
     vector<Node *> totalFind;
     string findList = "";
     string temp = "";
 
-    // folder->findName(_nodeName, totalFind);
-    this->findName(totalFind, folder);
+    this->findName(totalFind, folder); //recursion
 
-    if (totalFind.size()==0) return "";
+    if (totalFind.size()==0) _answer = "";
     
     for (int i = 0; i < totalFind.size(); i++)
     { 
@@ -35,7 +35,7 @@ string Find::visitFolder(Folder *folder)
         temp.clear();
         if (i!=totalFind.size()-1) findList+= '\n';
     }
-    return findList;
+    _answer = findList;
 }
 
 void Find::findName(vector<Node *>& answer, Node *node)
@@ -47,14 +47,14 @@ void Find::findName(vector<Node *>& answer, Node *node)
         {
             Node *node = children[i];
             Action *n = new Name();
-            if (node->accept(n) == _nodeName) answer.push_back(node);
+            node->accept(n);
+            if (n->getName() == _nodeName) answer.push_back(node);
             this->findName(answer, node);
         }
     }
     else if (node->classType() == "File")
     {
-        // Action *n = new Name();
-        // if (node->accept(n) == _nodeName) answer.push_back(node);
+
     }
     else
     {
