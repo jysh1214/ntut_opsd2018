@@ -15,13 +15,17 @@ class Find: public Action
 {
     public:
         Find(string nodeName);
-
-        string visitFile(File *file);
-        string visitFolder(Folder *folder);
+        void visitFile(File *file);
+        void visitFolder(Folder *folder);
         void findName(vector<Node *>& answer, Node *node);
+
+        string findResult()
+        {
+            return _answer;
+        }
 
     private:
         string _nodeName;
+        string _answer;
 };
-
 #endif
