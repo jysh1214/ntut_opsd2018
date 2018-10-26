@@ -9,22 +9,14 @@ Name::Name()
 
 }
 
-string Name::visitFile(File *file)
+void Name::visitFile(File *file)
 {
-    // return file->name();
-    string nodeName;
     string tempStr = file->_path;
-    nodeName = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
-
-    return nodeName;
+    _name = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
 }
 
-string Name::visitFolder(Folder *folder)
+void Name::visitFolder(Folder *folder)
 {
-    // return folder->name();
-    string nodeName;
     string tempStr = folder->_path;
-    nodeName = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
-
-    return nodeName;
+    _name = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
 }
