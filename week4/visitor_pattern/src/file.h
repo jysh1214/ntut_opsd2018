@@ -13,24 +13,19 @@ class File : public Node
         friend class Action;
         friend class Name;
         friend class Find;
+        friend class InfoContent;
 
         File(const char *path): Node(path)
         {
          
         }
 
-        // string find(string nodeName) const
-        // {
-        //   if (nodeName==this->name()) return name();
-        //   else return ("");
-        // }
-
-        string accept(Action *visitor)
+        void accept(Action *visitor)
         {
-            return visitor->visitFile(this);
+            visitor->visitFile(this);
         }
 
-        string classType()
+        string classType() const
         {
             return "File";
         }
