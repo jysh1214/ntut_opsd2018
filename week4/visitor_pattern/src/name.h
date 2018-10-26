@@ -12,8 +12,15 @@ class Name: public Action
 {
     public:
         Name();
-        string visitFile(File *file);
-        string visitFolder(Folder *folder);
-};
+        void visitFile(File *file);
+        void visitFolder(Folder *folder);
+       
+        string getName()
+        {
+            return _name;
+        }
 
+    private:
+        string _name;
+};
 #endif
