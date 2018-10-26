@@ -12,9 +12,11 @@ class Action
 {
     public:
         Action();
+        virtual void visitFile(File *file) = 0;
+        virtual void visitFolder(Folder *folder) = 0;
 
-        virtual string visitFile(File *file);
-        virtual string visitFolder(Folder *folder);
+        virtual string getName();
+        virtual string findResult();
+        virtual int getContentSize();
 };
-
 #endif
