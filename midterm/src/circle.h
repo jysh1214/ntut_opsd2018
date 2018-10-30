@@ -28,11 +28,6 @@ public:
     fav->visitCircle(this);
   }
 
-  string classType() const
-  {
-    return "Circle";
-  }
-
 private:
   double _r;
 };
