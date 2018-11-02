@@ -1,3 +1,4 @@
+#include <memory>
 #include "infocontent.h"
 #include "node.h"
 #include "file.h"
@@ -15,8 +16,10 @@ void InfoContent::visitFile(File *file)
 
 void InfoContent::visitFolder(Folder *folder)
 {
-    for (int i = 0; i < folder->numberOfChildren(); i++)
+    
+    NodeIterator * it = folder->createIterator();
+    for (it->first(); !it->isDone(); it->next())
     {
-        (folder->getChildren())[i]->accept(this);
+        it->currentItem()->accept(this);
     }
 }
