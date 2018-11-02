@@ -3,7 +3,6 @@
 
 #include "action.h"
 
-class Node;
 class File;
 class Folder;
 
@@ -16,7 +15,7 @@ class InfoContent: public Action
         void visitFile(File *file);
         void visitFolder(Folder *folder);
 
-        int getContentSize()
+        int getContentSize() const
         {
             return _size;
         }
