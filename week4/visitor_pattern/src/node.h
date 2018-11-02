@@ -2,10 +2,11 @@
 #define NODE_H
 
 #include <sys/stat.h>
+#include <memory>
 #include <vector>
 #include <string>
 #include "action.h"
-#include "name.h"
+#include "node_iterator.h"
 
 class Action;
 
@@ -14,11 +15,6 @@ using namespace::std;
 class Node
 {
     public:
-        friend class Action;
-        friend class Name;
-        friend class Find;
-        friend class InfoContent;
-
         Node(const char * path): _path(path)
         {
             lstat(_path, &_st);
@@ -54,12 +50,12 @@ class Node
 
         virtual vector<Node *> getChildren() const
         {
-
+            throw string("get children: not applicable\n");
         }
 
-        virtual string classType() const
+        virtual NodeIterator * createIterator()
         {
-
+           
         }
 
   private:
