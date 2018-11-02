@@ -2,7 +2,7 @@
 #include "node.h"
 #include "file.h"
 #include "folder.h"
-#include <iostream>
+
 Find::Find(string nodeName): _nodeName(nodeName)
 {
     _answer;
@@ -40,7 +40,7 @@ void Find::visitFolder(Folder *folder)
 
 void Find::findName(vector<Node *>& answer, Node *node)
 {
-    if (node->classType() == "Folder")
+    try
     {
         vector<Node *> children = node->getChildren();
         for (int i = 0; i < children.size(); i++)
@@ -50,15 +50,10 @@ void Find::findName(vector<Node *>& answer, Node *node)
             node->accept(n);
             if (n->getName() == _nodeName) answer.push_back(node);
             this->findName(answer, node);
-        }
+        }        
     }
-    else if (node->classType() == "File")
+    catch (string e)
     {
 
     }
-    else
-    {
-        throw string ("Error.");
-    }
-
 }
