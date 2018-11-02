@@ -19,7 +19,7 @@ class Find: public Action
         void visitFolder(Folder *folder);
         void findName(vector<Node *>& answer, Node *node);
 
-        string findResult()
+        string findResult () const
         {
             return _answer;
         }
