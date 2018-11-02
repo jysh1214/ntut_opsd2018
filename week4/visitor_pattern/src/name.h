@@ -15,7 +15,7 @@ class Name: public Action
         void visitFile(File *file);
         void visitFolder(Folder *folder);
        
-        string getName()
+        string getName() const
         {
             return _name;
         }
