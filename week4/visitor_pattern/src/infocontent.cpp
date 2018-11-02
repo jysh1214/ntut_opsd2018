@@ -1,25 +1,26 @@
-#include <memory>
-#include "infocontent.h"
-#include "node.h"
-#include "file.h"
-#include "folder.h"
+#ifndef INFOCONTENT_H
+#define INFOCONTENT_H
 
-InfoContent::InfoContent(): _size(0)
+#include "action.h"
+
+class File;
+class Folder;
+
+using namespace::std;
+
+class InfoContent: public Action
 {
+    public:
+        InfoContent();
+        void visitFile(File *file);
+        void visitFolder(Folder *folder);
 
-}
+        int getContentSize() const
+        {
+            return _size;
+        }
 
-void InfoContent::visitFile(File *file)
-{
-    _size += file->size();
-}
-
-void InfoContent::visitFolder(Folder *folder)
-{
-    
-    NodeIterator * it = folder->createIterator();
-    for (it->first(); !it->isDone(); it->next())
-    {
-        it->currentItem()->accept(this);
-    }
-}
+    private:
+        int _size;
+};
+#endif
