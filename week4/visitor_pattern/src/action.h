@@ -15,8 +15,8 @@ class Action
         virtual void visitFile(File *file) = 0;
         virtual void visitFolder(Folder *folder) = 0;
 
-        virtual string getName();
-        virtual string findResult();
-        virtual int getContentSize();
+        virtual string getName() const;
+        virtual string findResult() const;
+        virtual int getContentSize() const;
 };
 #endif
