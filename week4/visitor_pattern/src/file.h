@@ -10,11 +10,6 @@ using namespace::std;
 class File : public Node
 {
     public:
-        friend class Action;
-        friend class Name;
-        friend class Find;
-        friend class InfoContent;
-
         File(const char *path): Node(path)
         {
          
@@ -24,11 +19,5 @@ class File : public Node
         {
             visitor->visitFile(this);
         }
-
-        string classType() const
-        {
-            return "File";
-        }
-
 };
 #endif
