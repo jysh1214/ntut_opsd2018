@@ -1,8 +1,7 @@
-#ifndef INFOCONTENT_H
-#define INFOCONTENT_H
+#ifndef INFO_CONTENT_VISITOR_H
+#define INFO_CONTENT_VISITOR_H
 
 #include "node_visitor.h"
-#include "node_iterator.h"
 
 class Node;
 class File;
@@ -10,10 +9,10 @@ class Folder;
 
 using namespace::std;
 
-class InfoContent: public NodeVisitor
+class InfoContentVisitor: public NodeVisitor
 {
     public:
-        InfoContent();
+        InfoContentVisitor();
         void visitFile(File *file);
         void visitFolder(Folder *folder);
 
