@@ -1,19 +1,18 @@
 #include "file.h"
 #include "folder.h"
-#include "node_iterator.h"
-#include "infocontent.h"
+#include "info_content_visitor.h"
 
-InfoContent::InfoContent(): _size(0)
+InfoContentVisitor::InfoContentVisitor(): _size(0)
 {
 
 }
 
-void InfoContent::visitFile(File *file)
+void InfoContentVisitor::visitFile(File *file)
 {
     _size += file->size();
 }
 
-void InfoContent::visitFolder(Folder *folder)
+void InfoContentVisitor::visitFolder(Folder *folder)
 {
     NodeIterator * it = folder->createIterator();
     for (it->first(); !it->isDone(); it->next())
