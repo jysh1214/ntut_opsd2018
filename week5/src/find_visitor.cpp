@@ -29,7 +29,7 @@ void FindVisitor::visitFolder(Folder *folder)
     {  
         int x = (folder->getPath()).size();
         temp += ".";
-        temp += (it->second)->getPath().substr(x, (it->second)->getPath().size());
+        temp += it->first.substr(x, it->first.size());
         findList += temp;
         temp.clear();
         findList+= '\n';
