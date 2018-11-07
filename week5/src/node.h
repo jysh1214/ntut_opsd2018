@@ -5,9 +5,7 @@
 #include <map>
 #include <string>
 #include "node_visitor.h"
-#include "name.h"
-
-class NodeVisitor;
+#include "node_iterator.h"
 
 using namespace::std;
 
@@ -40,11 +38,23 @@ class Node
             return _path;
         }
 
+        string name() const
+        {
+            string nodeName;
+            string tempStr = this->getPath();
+            nodeName = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
+            return nodeName;
+        }
+
+        virtual NodeIterator * createIterator()
+        {
+            return nullptr;
+        }
+
         virtual void accept(NodeVisitor *visitor)
         {
-            // Name
             // FindVisitor
-            // InfoContent
+            // InfoContentVisitor
         }
 
         virtual map<string, Node *> getChildren() const
