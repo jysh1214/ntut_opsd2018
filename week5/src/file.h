@@ -2,31 +2,24 @@
 #define FILE_H
 
 #include "node.h"
-#include "node_visitor.h"
-#include "node_iterator.h"
+#include "null_iterator.h"
 
 using namespace::std;
 
 class File : public Node
 {
     public:
-        class NullIterator: public NodeIterator
-        {
-            public:
-                NullIterator(){}
-                void first(){}
-                Node * currentItem(){}
-                void next(){}
-
-                bool isDone()
-                {
-                    return true;
-                }
-        };
-
         File(const char *path): Node(path)
         {
          
+        }
+
+        string name() const
+        {
+            string nodeName;
+            string tempStr = this->getPath();
+            nodeName = tempStr.substr(tempStr.find_last_of("/")+1, tempStr.length()-tempStr.find_last_of("/"));
+            return nodeName;
         }
 
         void accept(NodeVisitor *visitor)
