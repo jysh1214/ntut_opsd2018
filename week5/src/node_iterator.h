@@ -10,5 +10,6 @@ class NodeIterator
         virtual Node *currentItem() = 0;
         virtual void next() = 0;
         virtual bool isDone() = 0;
+        virtual ~NodeIterator(){}
 };
 #endif
