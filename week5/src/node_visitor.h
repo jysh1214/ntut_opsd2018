@@ -11,12 +11,11 @@ using namespace::std;
 class NodeVisitor
 {
     public:
-        NodeVisitor();
         virtual void visitFile(File *file) = 0;
         virtual void visitFolder(Folder *folder) = 0;
 
-        virtual string getName();
-        virtual string findResult();
-        virtual int getContentSize();
+        //virtual string getName();
+        virtual string findResult(){return "";}
+        virtual int getContentSize(){return 0;}
 };
 #endif
