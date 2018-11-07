@@ -3,7 +3,6 @@
 
 #include <map>
 #include "node.h"
-#include "node_visitor.h"
 #include "node_iterator.h"
 
 using namespace std;
@@ -44,8 +43,6 @@ class Folder: public Node
             private:
                 Folder *_folder;
                 map<string, Node *>::iterator _it;
-
-
         };
 
         Folder(const char *path): Node(path)
