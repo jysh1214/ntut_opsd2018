@@ -6,14 +6,12 @@
 
 FindVisitor::FindVisitor(string name): _nodeName(name)
 {
-    _answer;
+ 
 }
 
 void FindVisitor::visitFile(File *file)
 {
-    NodeVisitor *n = new Name();
-    file->accept(n);
-    if (n->getName()==_nodeName) _answer = _nodeName;
+    if (file->name()==_nodeName) _answer = _nodeName;
     else _answer = "";
 }
 
@@ -26,17 +24,19 @@ void FindVisitor::visitFolder(Folder *folder)
     this->findName(totalFind, folder); //recursion
 
     if (totalFind.size()==0) _answer = "";
-    
-    for (int i = 0; i < totalFind.size(); i++)
-    { 
+
+    for (map<string, Node *>::iterator it = totalFind.begin(); it!=totalFind.end(); it++)
+    {  
         int x = (folder->getPath()).size();
         temp += ".";
-        temp += (totalFind[to_string(i)]->getPath()).substr(x, (totalFind[to_string(i)]->getPath()).size());
+        temp += (it->second)->getPath().substr(x, (it->second)->getPath().size());
         findList += temp;
         temp.clear();
-        if (i!=totalFind.size()-1) findList+= '\n';
+        findList+= '\n';
     }
-    _answer = findList;
+
+    _answer = findList.substr(0, findList.size()-1); //remove last '\n'
+    
 }
 
 void FindVisitor::findName(map<string, Node *>& answer, Node *node)
@@ -44,14 +44,13 @@ void FindVisitor::findName(map<string, Node *>& answer, Node *node)
     try
     {
         map<string, Node *> children = node->getChildren();
-        for (int i = 0; i < children.size(); i++)
+        for (map<string, Node *>::iterator it = children.begin(); it!=children.end(); it++)
         {
-            Node *node = children[to_string(i)];
-            NodeVisitor *n = new Name();
-            node->accept(n);
-            if (n->getName() == _nodeName)
+            Node *node = it->second;
+
+            if (node->name() == _nodeName)
             {
-                answer.insert(pair<string, Node *>(to_string(answer.size()), node));
+                answer.insert(pair<string, Node *>(node->getPath(), node));
             }
             this->findName(answer, node);
         }
