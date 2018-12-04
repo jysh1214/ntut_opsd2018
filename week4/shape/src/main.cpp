@@ -29,40 +29,6 @@ argument 3 : method (area or perimeter).
 argument 4 : order (inc or dec).
 */
 
-template<typename Key_t>
-void switchFunction(const Key_t& key,
-    const vector<pair<Key_t, function<void()>>>& pairs,
-    const function<void()>& def)
-{
-    unordered_map<Key_t, function<void()>> dict;
-    for (const auto& entry : pairs)
-    {
-        dict.insert(entry);
-    }
-
-    assert(dict.size() == pairs.size());
-
-    const auto it = dict.find(key);
-
-    if (it != dict.end())
-    {
-        it->second();
-    }
-    else
-    {
-        def();
-    }
-}
-
-template<typename F, typename... Args>
-function<void()> defer(F f, Args ... args)
-{
-    return [f, args...]()
-    {
-        f(args...);
-    };
-}
-
 vector<Shape*> parse_file(string filepath)
 {
     Shape* myarray[] = {};
