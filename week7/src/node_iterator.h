@@ -1,5 +1,5 @@
-#ifndef NODE_ITERATOR
-#define NODE_ITERATOR
+#ifndef NODE_ITERATOR_H
+#define NODE_ITERATOR_H
 
 class Node;
 
