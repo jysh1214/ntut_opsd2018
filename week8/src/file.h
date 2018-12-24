@@ -6,7 +6,7 @@
 class File : public Node
 {
 public:
-    File(char *path) : Node(path)
+    File(const char *path) : Node(path)
     {
         struct stat st;
         if (lstat(path, &st) == 0)
