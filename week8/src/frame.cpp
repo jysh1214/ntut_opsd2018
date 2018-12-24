@@ -55,7 +55,7 @@ void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
             std::string nodeName = (*it)->name();
             nodeName += ", ";
             nodeName += std::to_string((*it)->size());
-
+            // wxString(nodeName)
             wxTreeItemId newItem = _tree->AppendItem(parent, nodeName);
             TreeBuilder((*it), newItem);
         }
