@@ -12,9 +12,12 @@ bool MyApp::OnInit()
         return 0;
     }
 
-    default_root = wxGetApp().argv[1];
+    _defaultRoot = wxGetApp().argv[1];
     NodeBuilder nb;
-    nb.build(default_root.c_str());
+
+    char * c_defaultRoot = &_defaultRoot[0u];
+
+    nb.build(c_defaultRoot);
 
     Frame * frame = new Frame(wxT("***Tree Test***"), nb.getRoot());
     frame->Show(true);
