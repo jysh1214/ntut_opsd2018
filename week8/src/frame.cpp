@@ -1,6 +1,11 @@
 #include <string>
 #include <vector>
+#include <sys/stat.h>
 #include "frame.h"
+#include "item_data.h"
+
+#include <fstream>
+#include <cctype>
 
 #include <iostream>
 using namespace std;
@@ -11,11 +16,12 @@ Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, 
     _tree = new wxTreeCtrl(this, TREE_ID, wxPoint(0,0), wxSize(300,800), 
     wxTR_DEFAULT_STYLE | wxTR_SINGLE | wxTR_EDIT_LABELS );
 
-    std::string rootName = string(root->name());
+    std::string rootName = root->name();
     rootName += ", ";
     rootName += std::to_string(root->size());
 
-    wxTreeItemId rootId = _tree->AddRoot(rootName);
+    wxString path = root->getPath(); 
+    wxTreeItemId rootId = _tree->AddRoot(rootName, -1, -1, new ItemData(path));
     TreeBuilder(root ,rootId);
 
     _tree->ExpandAllChildren(rootId);
@@ -33,9 +39,9 @@ Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, 
 }
 
 BEGIN_EVENT_TABLE(Frame, wxFrame)
-    EVT_BUTTON(SAVE_ID, Frame::OnSave)
-    EVT_TREE_SEL_CHANGED(TREE_ID, Frame::OnClick)
-    EVT_TREE_END_LABEL_EDIT(TREE_ID, Frame::OnEdit)
+    EVT_BUTTON(SAVE_ID, Frame::OnSave)              // save button
+    EVT_TREE_SEL_CHANGED(TREE_ID, Frame::OnClick)   // click item
+    EVT_TREE_END_LABEL_EDIT(TREE_ID, Frame::OnEdit) // edit item
 END_EVENT_TABLE()
 
 void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
@@ -48,7 +54,9 @@ void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
             std::string nodeName = (*it)->name();
             nodeName += ", ";
             nodeName += std::to_string((*it)->size());
-            wxTreeItemId newItem = _tree->AppendItem(parent, nodeName);
+
+            wxString path = (*it)->getPath(); 
+            wxTreeItemId newItem = _tree->AppendItem(parent, nodeName, -1, -1, new ItemData(path));
             TreeBuilder((*it), newItem);
         }
     }
@@ -57,20 +65,90 @@ void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
 
 void Frame::OnSave(wxCommandEvent & WXUNUSED(event))
 {
-    wxFileDialog * SaveDialog= new wxFileDialog(this, _T("Choose a file"), _(""), _(""), _("*.*"), wxFD_SAVE);
-    if ( SaveDialog->ShowModal() == wxID_OK )
+    if (_mainEditBox->IsModified())
     {
-        _mainEditBox->SaveFile(SaveDialog->GetPath());
+
     }
-    SaveDialog->Close();
+    // _mainEditBox->SaveFile(SaveDialog->GetPath());
 }
 
 void Frame::OnClick(wxTreeEvent& event)
 {
-    _itemText = _tree->GetItemText(event.GetItem());
+    // _itemText = _tree->GetItemText(event.GetItem());
+    // cout<<_itemText<<endl;
+
+    ItemData * nodePath = (ItemData *)_tree->GetItemData(event.GetItem());
+    TextLoad(nodePath->getData());
 }
 
 void Frame::OnEdit(wxTreeEvent& event)
 {
     
+}
+
+bool isBinary(const char * path)
+{
+    ifstream inFile;
+    inFile.open(path); 
+
+    inFile.seekg(0,ios::end);
+    long length = inFile.tellg();
+    inFile.seekg(0,ios::beg);
+
+    char* buffer = 0;
+    buffer = new char[length];
+    inFile.get(buffer,length);
+    bool type = 1;
+    int i = 0;
+
+    do
+    {
+        type = isascii(buffer[i]);
+        i++;
+    }
+    while ((i < length) && (type == 1));
+
+    inFile.close();
+	delete buffer;
+
+    if (type == 1)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+void Frame::TextLoad(wxString wxs_path)
+    {
+    const char * path = wxs_path.mb_str();
+    struct stat st;
+    bool noDisplay = false;
+    if (lstat(path, &st) == 0)
+    {
+        if (S_ISREG(st.st_mode)) // file
+        {
+            // check is text file or binary file
+            isBinary(path) ?
+            noDisplay = true :
+            _mainEditBox->LoadFile(wxs_path);
+        }
+        else if (S_ISLNK(st.st_mode)) // link
+        {
+            noDisplay = true;
+        }
+        else if (S_ISDIR(st.st_mode)) // folder
+        {
+            _mainEditBox->Clear();
+        }
+
+        if (noDisplay)
+        {
+            _mainEditBox = new wxTextCtrl(this, -1, _T("The file is not displayed in the editor because it uses an unsupported text encoding."),
+            wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
+            noDisplay = false;
+        }
+    }
 }
