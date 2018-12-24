@@ -146,7 +146,8 @@ void Frame::TextLoad(wxString wxs_path)
 
         if (noDisplay)
         {
-            _mainEditBox = new wxTextCtrl(this, -1, _T("The file is not displayed in the editor because it uses an unsupported text encoding."),
+            _mainEditBox = new wxTextCtrl(this, -1, 
+            _T("The file is not displayed in the editor because it uses an unsupported text encoding."),
             wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
             noDisplay = false;
         }
