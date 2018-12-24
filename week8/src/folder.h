@@ -7,7 +7,7 @@
 class Folder : public Node
 {
 public:
-    Folder(char *path) : Node(path)
+    Folder(const char *path) : Node(path)
     {
         struct stat st;
         if (lstat(path, &st) == 0)
