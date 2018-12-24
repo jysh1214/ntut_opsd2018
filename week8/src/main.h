@@ -10,7 +10,7 @@ public:
     virtual bool OnInit();
 
 private:
-    std::string default_root;
+    std::string _defaultRoot;
 };
 
 #endif
