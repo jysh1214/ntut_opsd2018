@@ -109,7 +109,7 @@ bool isBinary(const char * path)
     while ((i < length) && (type == 1));
 
     inFile.close();
-	delete buffer;
+    delete buffer;
 
     if (type == 1)
     {
