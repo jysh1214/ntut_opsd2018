@@ -17,6 +17,7 @@ public:
     void OnSave(wxCommandEvent & WXUNUSED(event));
     void OnClick(wxTreeEvent& event);
     void OnEdit(wxTreeEvent& event);
+    void TextLoad(wxString wxs_path);
 
     wxTreeCtrl * _tree;
     wxButton * _saveButton;
