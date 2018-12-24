@@ -12,7 +12,7 @@ using namespace std;
 
 Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, title, wxDefaultPosition, wxSize(900, 800))
 {
-    // tree
+    /*** tree ***/
     _tree = new wxTreeCtrl(this, TREE_ID, wxPoint(0,0), wxSize(300,800), 
     wxTR_DEFAULT_STYLE | wxTR_SINGLE | wxTR_EDIT_LABELS );
 
@@ -26,11 +26,11 @@ Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, 
 
     _tree->ExpandAllChildren(rootId);
 
-    // text
+    /*** text ***/
     _mainEditBox = new wxTextCtrl(this, -1, _T("Type some text..."),
     wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
 
-    // button
+    /*** button ***/
     _saveButton = new wxButton(this, SAVE_ID, wxT("Save"), 
     wxPoint(310, 650), wxSize(590, 100));
 
