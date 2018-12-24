@@ -15,7 +15,7 @@ public:
     NodeBuilder(){}
     virtual ~NodeBuilder(){}
 
-    void build(char * path)
+    void build(const char * path)
     {
         struct stat st;
         if (lstat(path, &st) == 0)
@@ -41,11 +41,10 @@ public:
                 {
                     if (std::string(entry->d_name) != "." && std::string(entry->d_name) != "..")
                     {
-                        NodeBuilder nb2;
+                        NodeBuilder nb;
                         std::string pathName = std::string(path) + "/" + std::string(entry->d_name);
-                        char * c_pathName = &pathName[0u];
-                        nb2.build(c_pathName);
-                        _root->add(nb2.getRoot());
+                        nb.build(pathName.c_str());
+                        _root->add(nb.getRoot());
                     }
                 }
             }
