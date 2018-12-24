@@ -68,7 +68,7 @@ void Frame::OnSave(wxCommandEvent & WXUNUSED(event))
     wxFileDialog *SaveDialog= new wxFileDialog(this, _T("Choose a file"), _(""), _(""), _("*.*"), wxFD_SAVE);
     if ( SaveDialog->ShowModal() == wxID_OK )
     {
-    _mainEditBox->SaveFile(SaveDialog->GetPath());
+        _mainEditBox->SaveFile(SaveDialog->GetPath());
     }
     SaveDialog->Close();
 }
