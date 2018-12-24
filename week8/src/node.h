@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include <wx/wx.h>
+
 #include <sys/stat.h>
 #include <string>
 #include <vector>
@@ -12,28 +13,26 @@ using namespace std;
 class Node
 {
 public:
-    Node(char *path) : _path(path)
+    Node(const char * path)
     {
-        lstat(_path, &_st);
-        if (lstat(_path, &_st) == -1)
+        lstat(path, &_st);
+        if (lstat(path, &_st) == -1)
         {
             throw std::string("No such file or directory.");
         }
-
-        std::string tempStr = _path;
-
-        _name= tempStr.substr(tempStr.find_last_of("/") + 1, 
-        tempStr.length() - tempStr.find_last_of("/"));
+        wxs_path = wxString::FromUTF8(path);
+        std::string tempStr = path;
+        _name = tempStr.substr(tempStr.find_last_of("/") + 1, tempStr.length() - tempStr.find_last_of("/"));
     }
 
     virtual ~Node(){}
 
-    std::string getPath()
-    {  
-        return _path;
+    wxString getPath() const
+    {
+        return wxs_path;
     }
 
-    std::string name()
+    std::string name() const
     {
         return _name;
     }
@@ -54,8 +53,8 @@ public:
     }
 
 private:
-    char *_path;
     std::string _name;
+    wxString wxs_path;
     struct stat _st;
 };
 
