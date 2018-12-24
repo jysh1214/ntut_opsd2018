@@ -6,7 +6,7 @@
 class Link : public Node
 {
 public:
-    Link(const char *path, Node *node = nullptr) : Node(path)
+    Link(char *path, Node *node = nullptr) : Node(path)
     {
         struct stat st;
         if (lstat(path, &st) == 0)
