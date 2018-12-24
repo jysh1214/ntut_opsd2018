@@ -11,19 +11,12 @@ Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, 
     _tree = new wxTreeCtrl(this, TREE_ID, wxPoint(0,0), wxSize(300,800), 
     wxTR_DEFAULT_STYLE | wxTR_SINGLE | wxTR_EDIT_LABELS );
 
-    std::string rootName = root->name();
+    std::string rootName = string(root->name());
     rootName += ", ";
     rootName += std::to_string(root->size());
 
     wxTreeItemId rootId = _tree->AddRoot(rootName);
-    // test
-    wxTreeItemId afolder = _tree->AppendItem(rootId, wxT("afolder"));
-    wxTreeItemId a_out = _tree->AppendItem(afolder, wxT("a.out"));
-    wxTreeItemId gtextfile_txt = _tree->AppendItem(rootId, wxT("gtextfile.txt"));
-    wxTreeItemId hello = _tree->AppendItem(rootId, wxT("hello"));
-    wxTreeItemId hello_cpp = _tree->AppendItem(rootId, wxT("hello.cpp"));
-    // test
-    // TreeBuilder(root ,rootId);
+    TreeBuilder(root ,rootId);
 
     _tree->ExpandAllChildren(rootId);
 
@@ -55,7 +48,6 @@ void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
             std::string nodeName = (*it)->name();
             nodeName += ", ";
             nodeName += std::to_string((*it)->size());
-            // wxString(nodeName)
             wxTreeItemId newItem = _tree->AppendItem(parent, nodeName);
             TreeBuilder((*it), newItem);
         }
@@ -65,7 +57,7 @@ void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
 
 void Frame::OnSave(wxCommandEvent & WXUNUSED(event))
 {
-    wxFileDialog *SaveDialog= new wxFileDialog(this, _T("Choose a file"), _(""), _(""), _("*.*"), wxFD_SAVE);
+    wxFileDialog * SaveDialog= new wxFileDialog(this, _T("Choose a file"), _(""), _(""), _("*.*"), wxFD_SAVE);
     if ( SaveDialog->ShowModal() == wxID_OK )
     {
         _mainEditBox->SaveFile(SaveDialog->GetPath());
