@@ -67,7 +67,7 @@ void Frame::OnSave(wxCommandEvent & WXUNUSED(event))
 {
     if (_mainEditBox->IsModified())
     {
-
+        cout<<"RS"<<endl;
     }
     // _mainEditBox->SaveFile(SaveDialog->GetPath());
 }
