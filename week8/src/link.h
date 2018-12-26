@@ -1,24 +1,24 @@
-#ifndef LINK_H
-#define LINK_H
+#include <wx/app.h> 
+#include "main.h"
+#include "frame.h"
+#include "node_builder.h"
 
-#include "node.h"
+IMPLEMENT_APP(MyApp)
 
-class Link : public Node
+bool MyApp::OnInit()
 {
-public:
-    Link(const char *path, Node *node = nullptr) : Node(path)
+    if (wxGetApp().argc < 2)
     {
-        struct stat st;
-        if (lstat(path, &st) == 0)
-        {
-            if (!S_ISLNK(st.st_mode))
-            {
-                throw std::string("Node type error.");
-            }
-        }
+        fprintf(stderr, "usage: ./bin/hw8 --path\n");
+        return 0;
     }
 
-    virtual ~Link(){}
-};
-
-#endif
+    default_root = wxGetApp().argv[1];
+    NodeBuilder nb;
+    nb.build(default_root.c_str());
+    
+    Frame * frame = new Frame(wxT("***Tree Test***"), nb.getRoot());
+    frame->Show(true);
+    SetTopWindow(frame);
+    return true;
+}
