@@ -1,89 +1,56 @@
 #include <string>
 #include <vector>
 #include <sys/stat.h>
+#include <wx/string.h>
+#include <wx/filefn.h>
+#include <wx/msgdlg.h>
+#include <wx/kbdstate.h>
 #include "frame.h"
 #include "item_data.h"
 
 #include <fstream>
 #include <cctype>
 
-#include <iostream>
-using namespace std;
-
-Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, title, wxDefaultPosition, wxSize(900, 800))
+wxString removeComma(wxString wxs_text)
 {
-    /*** tree ***/
-    _tree = new wxTreeCtrl(this, TREE_ID, wxPoint(0,0), wxSize(300,800), 
-    wxTR_DEFAULT_STYLE | wxTR_SINGLE | wxTR_EDIT_LABELS );
-
-    std::string rootName = root->name();
-    rootName += ", ";
-    rootName += std::to_string(root->size());
-
-    wxString path = root->getPath(); 
-    wxTreeItemId rootId = _tree->AddRoot(rootName, -1, -1, new ItemData(path));
-    TreeBuilder(root ,rootId);
-
-    _tree->ExpandAllChildren(rootId);
-
-    /*** text ***/
-    _mainEditBox = new wxTextCtrl(this, -1, _T("Type some text..."),
-    wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
-
-    /*** button ***/
-    _saveButton = new wxButton(this, SAVE_ID, wxT("Save"), 
-    wxPoint(310, 650), wxSize(590, 100));
-
-    Connect(SAVE_ID, wxEVT_COMMAND_BUTTON_CLICKED, 
-    wxCommandEventHandler(Frame::OnSave));
+    wxString answer;
+    int p = 0;
+    bool done = false;
+    for (wxString::size_type i = 0; i < wxs_text.size(); i++)
+    {
+        if (wxs_text[i] == ',')
+        {
+            answer = wxs_text.SubString(0, p-1);
+            done = true;
+            break;
+        }
+        else { p++; }
+    }
+    if (!done)
+    {
+        answer = wxs_text;
+    }
+    return answer;
 }
 
-BEGIN_EVENT_TABLE(Frame, wxFrame)
-    EVT_BUTTON(SAVE_ID, Frame::OnSave)              // save button
-    EVT_TREE_SEL_CHANGED(TREE_ID, Frame::OnClick)   // click item
-    EVT_TREE_END_LABEL_EDIT(TREE_ID, Frame::OnEdit) // edit item
-END_EVENT_TABLE()
-
-void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
+wxString replace(wxString path, wxString name)
 {
-    try
+    wxString newPath;
+    for (wxString::size_type i = path.size(); i > 0; i--)
     {
-        std::vector<Node *> children = node->getChildren();
-        for (std::vector<Node *>::iterator it = children.begin(); it != children.end(); it ++)
+        if (path[i] == '/')
         {
-            std::string nodeName = (*it)->name();
-            nodeName += ", ";
-            nodeName += std::to_string((*it)->size());
-
-            wxString path = (*it)->getPath(); 
-            wxTreeItemId newItem = _tree->AppendItem(parent, nodeName, -1, -1, new ItemData(path));
-            TreeBuilder((*it), newItem);
+            newPath = path.SubString(0, path.size()-i+2);
+            newPath += removeComma(name);
+            break;
         }
     }
-    catch (std::string e) {}
+    return newPath;
 }
 
-void Frame::OnSave(wxCommandEvent & WXUNUSED(event))
+void renameFile(wxString oldPath, wxString newPath)
 {
-    if (_mainEditBox->IsModified())
-    {
-        cout<<"RS"<<endl;
-    }
-    // _mainEditBox->SaveFile(SaveDialog->GetPath());
-}
-
-void Frame::OnClick(wxTreeEvent& event)
-{
-    // _itemText = _tree->GetItemText(event.GetItem());
-    // cout<<_itemText<<endl;
-
-    ItemData * nodePath = (ItemData *)_tree->GetItemData(event.GetItem());
-    TextLoad(nodePath->getData());
-}
-
-void Frame::OnEdit(wxTreeEvent& event)
-{
-    
+    std::rename(oldPath.mb_str(), newPath.mb_str());
 }
 
 bool isBinary(const char * path)
@@ -111,13 +78,120 @@ bool isBinary(const char * path)
     inFile.close();
     delete buffer;
 
-    if (type == 1)
+    if (type == 1) return false;
+    else return true;
+}
+
+Frame::Frame(const wxChar *title, Node * root):wxFrame((wxFrame *) nullptr, -1, title, wxDefaultPosition, wxSize(900, 800))
+{ 
+    CreateStatusBar(1);
+
+    /*** hot key panel ***/
+    wxPanel * HotKeyPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
+
+    /*** tree ***/
+    _tree = new wxTreeCtrl(this, TREE_ID, wxPoint(0,0), wxSize(300,800), 
+    wxTR_DEFAULT_STYLE | wxTR_SINGLE | wxTR_EDIT_LABELS );
+
+    _root = root;
+
+    std::string rootName = _root->name();
+    rootName += ", ";
+    rootName += std::to_string(_root->size());
+ 
+    wxTreeItemId rootId = _tree->AddRoot(rootName, -1, -1, new ItemData(_root));
+    TreeBuilder(_root ,rootId);
+
+    _tree->ExpandAllChildren(rootId);
+
+    /*** text ***/
+    _mainEditBox = new wxTextCtrl(this, TEXT_ID, _T("Type some text..."),
+    wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
+
+    /*** button ***/
+    _saveButton = new wxButton(this, SAVE_ID, wxT("Save"), 
+    wxPoint(310, 650), wxSize(590, 100));
+
+    Connect(SAVE_ID, wxEVT_COMMAND_BUTTON_CLICKED, 
+    wxCommandEventHandler(Frame::OnSave));
+}
+
+BEGIN_EVENT_TABLE(Frame, wxFrame)
+    EVT_BUTTON(SAVE_ID, Frame::OnSave)                // save button
+    EVT_CHAR_HOOK(Frame::OnKeyDown)                   // hot key
+    EVT_TREE_SEL_CHANGED(TREE_ID, Frame::OnClick)     // click item
+    EVT_TREE_END_LABEL_EDIT(TREE_ID, Frame::OnEdit)   // edit item
+END_EVENT_TABLE()
+
+void Frame::TreeBuilder(Node * node, wxTreeItemId parent)
+{
+    try
     {
-        return false;
+        std::vector<Node *> children = node->getChildren();
+        for (std::vector<Node *>::iterator it = children.begin(); it != children.end(); it ++)
+        {
+            std::string nodeName = (*it)->name();
+            nodeName += ", ";
+            nodeName += std::to_string((*it)->size());
+
+            wxTreeItemId newItem = _tree->AppendItem(parent, nodeName, -1, -1, new ItemData((*it)));
+            TreeBuilder((*it), newItem);
+        }
+    }
+    catch (std::string e) {}
+}
+
+void Frame::OnSave(wxCommandEvent& WXUNUSED(event))
+{
+    SaveModule();
+}
+
+void Frame::OnKeyDown(wxKeyEvent& event)
+{  
+    if (event.ControlDown() && (int)event.GetKeyCode() == 83)
+    {
+        SaveModule();
+    }
+    event.Skip();
+}
+
+void Frame::OnClick(wxTreeEvent& event)
+{ 
+    ItemData * itemNode = (ItemData *)_tree->GetItemData(event.GetItem());
+    Node * node = itemNode->getData();
+    _itemNode = node;
+    TextLoad(node->getPath());
+}
+
+void Frame::OnEdit(wxTreeEvent& event)
+{
+    wxString oldLabel = _tree->GetItemText(event.GetItem());
+    wxString newLabel = event.GetLabel();
+    
+    if (newLabel == "" || newLabel == oldLabel)
+    {
+        event.Veto();
     }
     else
     {
-        return true;
+        wxString editMessage = "label edit: ";
+        editMessage += newLabel;
+        editMessage += "-- old name was ";
+        editMessage += removeComma(oldLabel);
+
+        /*** message box ***/
+        int answer = wxMessageBox(editMessage, "Confirm", 
+        wxCANCEL | wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION);
+
+        if (answer == wxYES)
+        {
+            ItemData * itemNode = (ItemData *)_tree->GetItemData(event.GetItem());
+            Node * node = itemNode->getData();
+            wxString oldPath = node->getPath();
+            wxString newPath = replace(oldPath, newLabel);
+            renameFile(oldPath, newPath);
+        }
+        else { event.Veto(); }
     }
 }
 
@@ -151,5 +225,28 @@ void Frame::TextLoad(wxString wxs_path)
             wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
             noDisplay = false;
         }
+    }
+}
+
+void Frame::SaveModule()
+{
+    if (_mainEditBox->IsModified())
+    {
+        /*** message box ***/
+        int answer = wxMessageBox("You want to save?", "Confirm", 
+        wxCANCEL | wxYES_NO | wxYES_DEFAULT | wxICON_QUESTION);
+
+        if (answer == wxYES)
+        {
+            wxString itemPath = _itemNode->getPath();
+            _mainEditBox->SaveFile(itemPath, wxTEXT_TYPE_ANY)?
+            SetStatusText(_T("Saved"), 0) :
+            SetStatusText(_T("Saved Failed"), 0);
+        }
+        else { SetStatusText(_T("Cancel Save"), 0); }
+    }
+    else 
+    { 
+        // user do nothing 
     }
 }
