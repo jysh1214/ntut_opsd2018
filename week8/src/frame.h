@@ -15,9 +15,11 @@ public:
 
     void TreeBuilder(Node * node, wxTreeItemId parent);
     void OnSave(wxCommandEvent & WXUNUSED(event));
+    void OnKeyDown(wxKeyEvent& event);
     void OnClick(wxTreeEvent& event);
     void OnEdit(wxTreeEvent& event);
     void TextLoad(wxString wxs_path);
+    void SaveModule();
 
     wxTreeCtrl * _tree;
     wxButton * _saveButton;
@@ -25,12 +27,13 @@ public:
 private:
     wxTextCtrl * _mainEditBox;
     Node * _root;
-    wxString _itemText;
+    Node * _itemNode;
 
     DECLARE_EVENT_TABLE()
 };
 
 const int TREE_ID = 101;
-const int SAVE_ID = 102;
+const int TEXT_ID = 102;
+const int SAVE_ID = 103;
 
 #endif
