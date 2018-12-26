@@ -3,24 +3,25 @@
 
 #include <wx/wx.h>
 #include <wx/treebase.h>
+#include "node.h"
 
 class ItemData : public wxTreeItemData
 {
 public:
-    ItemData(wxString data) : wxTreeItemData()
+    ItemData(Node * data) : wxTreeItemData()
     {
         _data = data;
     }
 
     virtual ~ItemData(){}
 
-    wxString getData() const
+    Node * getData() const
     {
         return _data;
     }
 
 private:
-    wxString _data;
+    Node * _data; 
 };
 
 #endif
