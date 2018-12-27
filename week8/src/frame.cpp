@@ -55,12 +55,12 @@ void renameFile(wxString oldPath, wxString newPath)
 
 bool isBinary(const char * path)
 {
-    ifstream inFile;
+    std::ifstream inFile;
     inFile.open(path); 
 
-    inFile.seekg(0,ios::end);
+    inFile.seekg(0,std::ios::end);
     long length = inFile.tellg();
-    inFile.seekg(0,ios::beg);
+    inFile.seekg(0,std::ios::beg);
 
     char* buffer = 0;
     buffer = new char[length];
@@ -211,7 +211,9 @@ void Frame::TextLoad(wxString wxs_path)
         }
         else if (S_ISLNK(st.st_mode)) // link
         {
-            noDisplay = true;
+            _mainEditBox = new wxTextCtrl(this, -1, 
+            _T("This is the link."),
+            wxPoint(310, 0), wxSize(600, 650), wxTE_MULTILINE);
         }
         else if (S_ISDIR(st.st_mode)) // folder
         {
