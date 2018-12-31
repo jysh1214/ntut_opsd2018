@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "shape.h"
+
 using namespace::std;
 template<class T> void sortArea(T);
 template<class T> void sortPerimeter(T);
